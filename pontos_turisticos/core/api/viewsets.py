@@ -1,6 +1,6 @@
-
 from argparse import Action
 from crypt import methods
+from tokenize import Token
 from urllib import request
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -8,6 +8,8 @@ from core.models import PontoTuristico
 from .serializers import PontoTuristicoSerializer
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 
 
 
@@ -18,6 +20,9 @@ class PontoTuristicoViewSet(ModelViewSet):
     serializer_class = PontoTuristicoSerializer
     filter_backends = (SearchFilter,)
     search_fields = ['nome','descricao','endereco__linha1']
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+
     #lookup_field = 'nome' está comentado pois pode dar erro se tiver mais de um retorno
 
     def get_queryset(self):
